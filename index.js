@@ -1,7 +1,47 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
+
+// //Create a new named format
+// morgan.token('custom', ':http-version (:method) :url => :status')
+// //use the new format by name
+// app.use(morgan('custom'))
+
+// morgan.token('json', (req, res) => {
+//   return JSON.stringify({
+//     url: req.url,
+//     method: req.method,
+//     httpVersion: req.httpVersion
+//   })
+// })
+
+// app.use(morgan('json'))
+
+//we are defining a new parameter called host
+morgan.token('host', function(req, res) {
+  if (req.method === 'POST') {
+    return `{"name": "${req.body.name}", "number": "${req.body.number}"}`
+  } else {
+    return ''
+  }
+})
+
+// we are using the host parameter
+// app.use(morgan(':method :host :status :res[content-length] - :response-time ms'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :host'))
+
+
+// morgan.token('test', function (req, res) {
+//   return JSON.stringify ({
+//     url: req.url,
+//     method: req.method
+//   })
+// })
+
+// app.use(morgan('tiny'))
+// app.use(morgan('test'))
 
 let persons = [
   {

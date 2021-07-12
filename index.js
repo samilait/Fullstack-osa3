@@ -1,26 +1,12 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 
-// //Create a new named format
-// morgan.token('custom', ':http-version (:method) :url => :status')
-// //use the new format by name
-// app.use(morgan('custom'))
-
-// morgan.token('json', (req, res) => {
-//   return JSON.stringify({
-//     url: req.url,
-//     method: req.method,
-//     httpVersion: req.httpVersion
-//   })
-// })
-
-// app.use(morgan('json'))
-
-//we are defining a new parameter called host
-morgan.token('host', function(req, res) {
+morgan.token('person', function(req, res) {
   if (req.method === 'POST') {
     return `{"name": "${req.body.name}", "number": "${req.body.number}"}`
   } else {
@@ -28,20 +14,7 @@ morgan.token('host', function(req, res) {
   }
 })
 
-// we are using the host parameter
-// app.use(morgan(':method :host :status :res[content-length] - :response-time ms'))
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :host'))
-
-
-// morgan.token('test', function (req, res) {
-//   return JSON.stringify ({
-//     url: req.url,
-//     method: req.method
-//   })
-// })
-
-// app.use(morgan('tiny'))
-// app.use(morgan('test'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'))
 
 let persons = [
   {
@@ -135,6 +108,11 @@ app.get('/info', (request, response) => {
   )
 })
 
-const port = 3001
-app.listen(port)
-console.log(`Server running on port ${port}`)
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
+
+// const port = 3001
+// app.listen(port)
+// console.log(`Server running on port ${port}`)

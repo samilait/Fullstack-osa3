@@ -1,3 +1,3 @@
 # Fullstack-osa3
 
-[heroku osa3](https://fullstack-osa3-sla.herokuapp.com/api/persons)
+[heroku osa3](https://fullstack-osa3-sla.herokuapp.com)
